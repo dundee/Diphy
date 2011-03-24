@@ -5,6 +5,9 @@ namespace Diphy\Builder;
 use Diphy\Cache\ICache;
 use Diphy\Parser\ScriptParser;
 
+/**
+ * Extends the posibilities of SimpleBuilder by looking up implementors of interface
+ */
 class ComplexBuilder extends SimpleBuilder
 {
 	/** var Diphy\Cache\ICache */

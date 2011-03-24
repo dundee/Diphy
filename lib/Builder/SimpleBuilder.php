@@ -5,6 +5,9 @@ namespace Diphy\Builder;
 use Diphy\ServiceContainer;
 use Diphy\Loader\ILoader;
 
+/**
+ * Builds services according to configuration or via reflection
+ */
 class SimpleBuilder extends ServiceContainer
 {
 	protected $config = array(
