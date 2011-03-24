@@ -55,4 +55,9 @@ class SimpleBuilderTest extends TestCase
 	{
 		$this->assertInstanceOf('Foo\D', $this->object->getService('Foo\D'));
 	}
+
+	public function testGetServiceWithMultipleDependenciesAndOptionalParameter()
+	{
+		$this->assertInstanceOf('Foo\E', $this->object->getService('Foo\E'));
+	}
 }

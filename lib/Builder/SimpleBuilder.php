@@ -57,7 +57,9 @@ class SimpleBuilder extends Container implements IBuilder
 
 			$params = array();
 			foreach ($paramsRefl as $paramRefl) {
-				$params[] = $this->getService($paramRefl->getClass()->getName());
+				if (!$paramRefl->isOptional()) {
+					$params[] = $this->getService($paramRefl->getClass()->getName());
+				}
 			}
 
 			$this->services[$serviceName] = $classRefl->newInstanceArgs($params);
