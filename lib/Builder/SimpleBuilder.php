@@ -57,7 +57,8 @@ class SimpleBuilder extends ServiceContainer
 		$classRefl = new \ReflectionClass($serviceName);
 
 		if ($classRefl->isInterface()) {
-			throw new \InvalidArgumentException(sprintf('SimpleBuilder can not instantiate interface "%s"', $serviceName));
+			$implementorName = $this->getImplementor($serviceName);
+			$classRefl = new \ReflectionClass($implementorName);
 		}
 
 		$constructorRefl = $classRefl->getConstructor();
@@ -131,5 +132,15 @@ class SimpleBuilder extends ServiceContainer
 		}
 
 		return $this->services[$serviceName] = $instance;
+	}
+
+	/**
+	 * Get implementor of given interface
+	 * @param string $interfaceName
+	 * @return string $implementorName
+	 */
+	protected function getImplementor($interfaceName)
+	{
+		throw new \InvalidArgumentException(sprintf('SimpleBuilder is not able to look for interface implementors "%s"', $interfaceName));
 	}
 }
