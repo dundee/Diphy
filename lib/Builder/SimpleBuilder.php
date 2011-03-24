@@ -9,8 +9,6 @@ class SimpleBuilder extends Container implements IBuilder
 {
 	private $config = array(
 		'services' => array(),
-		'autobuilding' => TRUE,
-		'autowiring' => TRUE,
 	);
 
 	/** var Diphy\Loader\ILoader[] */
@@ -22,10 +20,8 @@ class SimpleBuilder extends Container implements IBuilder
 			return $this->getConfiguredService($serviceName);
 		} elseif (isset($this->services[$serviceName])) {
 			return $this->services[$serviceName];
-		} elseif ($this->config['autobuilding']) {
-			return $this->buildService($serviceName);
 		} else {
-			throw new \InvalidArgumentException(sprintf('Service "%s" does not exist', $serviceName));
+			return $this->buildService($serviceName);
 		}
 	}
 
@@ -50,6 +46,11 @@ class SimpleBuilder extends Container implements IBuilder
 		}
 
 		$classRefl = new \ReflectionClass($serviceName);
+
+		if ($classRefl->isInterface()) {
+			throw new \InvalidArgumentException(sprintf('SimpleBuilder can not instantiate interface "%s"', $serviceName));
+		}
+
 		$constructorRefl = $classRefl->getConstructor();
 
 		if ($constructorRefl) {

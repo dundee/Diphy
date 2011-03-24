@@ -60,4 +60,12 @@ class SimpleBuilderTest extends TestCase
 	{
 		$this->assertInstanceOf('Foo\E', $this->object->getService('Foo\E'));
 	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testGetInterfaceImplementor()
+	{
+		$this->object->getService('Foo\IG');
+	}
 }
