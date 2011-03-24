@@ -3,8 +3,10 @@
 namespace DiphyTest\Builder;
 
 use DiphyTest\TestCase;
-use Diphy\Loader\SimpleLoader;
-use Diphy\Cache\NullCache;
+use Nette\Caching\FileStorage;
+use Nette\Loaders\RobotLoader;
+use Diphy\Cache\NetteCache;
+use Diphy\Loader\NetteRobotLoader;
 use Diphy\Parser\ScriptParser;
 use Diphy\Builder\ComplexBuilder;
 
@@ -28,10 +30,17 @@ class ComplexBuilderTest extends TestCase
 
 	public function setUp()
 	{
-		$loader = new SimpleLoader($this->loaderConfig);
-		$cache = new NullCache();
+		$robot = new RobotLoader();
+		$robot->setCacheStorage(new FileStorage(TMP_DIR));
+		$robot->addDirectory(APP_DIR);
+		$robot->addDirectory(LIBS_DIR);
+		$robot->register();
+		$loader = new NetteRobotLoader($robot);
+
 		$parser = new ScriptParser();
-		$this->object = new ComplexBuilder($parser, $cache, $this->config);
+		$netteCache = new NetteCache(new FileStorage(TMP_DIR));
+
+		$this->object = new ComplexBuilder($parser, $netteCache, $this->config);
 		$this->object->registerClassLoader($loader);
 	}
 

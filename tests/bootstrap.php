@@ -1,30 +1,22 @@
 <?php
 
-use Diphy\Loader\SimpleLoader;
+use Nette\Loaders\RobotLoader;
+use Nette\Caching\FileStorage;
 
 define('WWW_DIR', __DIR__);
 define('APP_DIR', __DIR__);
 define('LIBS_DIR', __DIR__ . '/../lib');
+define('TMP_DIR', __DIR__ . '/../tmp');
 
 define('FOO_DIR', __DIR__ . '/resources');
 define('BOO_DIR', __DIR__ . '/Loader/resources');
 
 require_once(__DIR__ . '/TestCase.php');
 
-require_once(LIBS_DIR . '/Loader/ILoader.php');
-require_once(LIBS_DIR . '/Loader/SimpleLoader.php');
+require_once(LIBS_DIR . '/nette/Nette/loader.php');
 
-
-$loaderConfig = array(
-	'namespaces' => array(
-		'DiphyTest' => APP_DIR,
-		'Diphy' => LIBS_DIR,
-		'Foo'   => FOO_DIR,
-		'Boo'   => BOO_DIR,
-	),
-);
-
-$loader = new SimpleLoader($loaderConfig);
-$loader->registerAutoload();
-
-
+$loader = new RobotLoader();
+$loader->setCacheStorage(new FileStorage(TMP_DIR));
+$loader->addDirectory(APP_DIR);
+$loader->addDirectory(LIBS_DIR);
+$loader->register();
