@@ -23,4 +23,11 @@ interface ILoader
 	 * @return void
 	 */
 	public function loadClass($className);
+
+	/**
+	 * Get path to class
+	 * @param string $className
+	 * @return string $path
+	 */
+	public function getPathToClass($className);
 }
