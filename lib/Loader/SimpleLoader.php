@@ -33,10 +33,16 @@ class SimpleLoader implements \Diphy\Loader\ILoader
 	{
 		$path = $this->getPathToClass($className);
 		if (!file_exists($path)) {
-			throw new \UnexpectedValueException(sprintf('Class "%s" not found in file "%s"', $className, $path));
+			throw new \UnexpectedValueException(sprintf('Class file "%s" of class "%s" not exists', $path, $className));
 		}
 
+		$path = realpath($path);
+
 		$this->loadFile($path);
+
+		if (!class_exists($className) && !interface_exists($className)) {
+			throw new \UnexpectedValueException(sprintf('Class file "%s" loaded, but class "%s" not present', $path, $className));
+		}
 	}
 
 	public function getPathToClass($className)
