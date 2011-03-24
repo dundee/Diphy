@@ -2,9 +2,9 @@
 
 namespace Foo;
 
-use Foo\IH;
+use Foo\IH as IHH;
 
-class H1 implements IH
+class H2 implements IHH
 {
 	public function __construct(IG $g)
 	{
