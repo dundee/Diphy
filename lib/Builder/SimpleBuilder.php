@@ -2,10 +2,10 @@
 
 namespace Diphy\Builder;
 
-use Diphy\Container;
+use Diphy\ServiceContainer;
 use Diphy\Loader\ILoader;
 
-class SimpleBuilder extends Container implements IBuilder
+class SimpleBuilder extends ServiceContainer
 {
 	private $config = array(
 		'services' => array(),
@@ -35,25 +35,19 @@ class SimpleBuilder extends Container implements IBuilder
 		}
 	}
 
+	/**
+	 * Registers new class loader
+	 * @param Diphy\Loader\ILoader $loader
+	 * @return void
+	 */
 	public function registerClassLoader(ILoader $loader)
 	{
 		$this->loaders[] = $loader;
 	}
 
-	public function buildService($serviceName)
+	protected function buildService($serviceName)
 	{
-		$loaded = FALSE;
-		foreach ($this->loaders as $loader) {
-			if ($loader->classFileExists($serviceName)) {
-				$loader->loadClass($serviceName);
-				$loaded = TRUE;
-				break;
-			}
-		}
-
-		if (!$loaded) {
-			throw new \InvalidArgumentException(sprintf('No class loader is able to load class "%s"', $serviceName));
-		}
+		$this->loadClass($serviceName);
 
 		$classRefl = new \ReflectionClass($serviceName);
 
@@ -79,5 +73,21 @@ class SimpleBuilder extends Container implements IBuilder
 		}
 
 		return $this->services[$serviceName];
+	}
+
+	protected function loadClass($className)
+	{
+		$loaded = FALSE;
+		foreach ($this->loaders as $loader) {
+			if ($loader->classFileExists($className)) {
+				$loader->loadClass($className);
+				$loaded = TRUE;
+				break;
+			}
+		}
+
+		if (!$loaded) {
+			throw new \InvalidArgumentException(sprintf('No class loader is able to load class "%s"', $className));
+		}
 	}
 }
