@@ -5,8 +5,6 @@ namespace DiphyTest\Loader;
 use DiphyTest\TestCase;
 use Diphy\Loader\SimpleLoader;
 
-define('BOO_DIR', __DIR__ . '/resources');
-
 /**
  * @author Daniel Milde <daniel@milde.cz>
  * @group unit

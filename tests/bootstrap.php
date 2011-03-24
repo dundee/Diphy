@@ -6,6 +6,9 @@ define('WWW_DIR', __DIR__);
 define('APP_DIR', __DIR__);
 define('LIBS_DIR', __DIR__ . '/../lib');
 
+define('FOO_DIR', __DIR__ . '/resources');
+define('BOO_DIR', __DIR__ . '/Loader/resources');
+
 require_once(__DIR__ . '/TestCase.php');
 
 require_once(LIBS_DIR . '/Loader/ILoader.php');

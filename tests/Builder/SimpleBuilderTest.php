@@ -6,8 +6,6 @@ use DiphyTest\TestCase;
 use Diphy\Loader\SimpleLoader;
 use Diphy\Builder\SimpleBuilder;
 
-define('FOO_DIR', __DIR__ . '/resources');
-
 /**
  * @author Daniel Milde <daniel@milde.cz>
  * @group unit
