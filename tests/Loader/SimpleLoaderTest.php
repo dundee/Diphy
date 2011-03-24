@@ -13,6 +13,7 @@ class SimpleLoaderTest extends TestCase
 {
 	private $loaderConfig = array(
 		'namespaces' => array(
+			'DiphyTest' => APP_DIR,
 			'Diphy' => LIBS_DIR,
 			'Boo'   => BOO_DIR,
 		),
