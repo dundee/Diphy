@@ -1,9 +1,10 @@
 <?php
 
-namespace Diphy;
+namespace DiphyTest\Builder;
 
-use Diphy\Diphy;
+use DiphyTest\TestCase;
 use Diphy\Loader\SimpleLoader;
+use Diphy\Builder\SimpleBuilder;
 
 define('FOO_DIR', __DIR__ . '/resources');
 
@@ -11,7 +12,7 @@ define('FOO_DIR', __DIR__ . '/resources');
  * @author Daniel Milde <daniel@milde.cz>
  * @group unit
  */
-class DiphyTest extends TestCase
+class SimpleBuilderTest extends TestCase
 {
 	private $config = array(
 
@@ -19,6 +20,7 @@ class DiphyTest extends TestCase
 
 	private $loaderConfig = array(
 		'namespaces' => array(
+			'DiphyTest' => APP_DIR,
 			'Diphy' => LIBS_DIR,
 			'Foo'   => FOO_DIR,
 		),
@@ -27,13 +29,13 @@ class DiphyTest extends TestCase
 	public function setUp()
 	{
 		$loader = new SimpleLoader($this->loaderConfig);
-		$this->object = new Diphy($this->config);
+		$this->object = new SimpleBuilder($this->config);
 		$this->object->registerClassLoader($loader);
 	}
 
 	public function testLoadConfig()
 	{
-		$this->assertInstanceOf('Diphy\Diphy', $this->object);
+		$this->assertInstanceOf('Diphy\Builder\SimpleBuilder', $this->object);
 	}
 
 	public function testGetServiceWithoutDependencies()
@@ -49,5 +51,10 @@ class DiphyTest extends TestCase
 	public function testGetServiceWithoutDependenciesAndEmptyConstructor()
 	{
 		$this->assertInstanceOf('Foo\C', $this->object->getService('Foo\C'));
+	}
+
+	public function testGetServiceWithMultipleDependencies()
+	{
+		$this->assertInstanceOf('Foo\D', $this->object->getService('Foo\D'));
 	}
 }

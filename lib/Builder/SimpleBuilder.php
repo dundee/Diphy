@@ -1,11 +1,11 @@
 <?php
 
-namespace Diphy;
+namespace Diphy\Builder;
 
+use Diphy\Container;
 use Diphy\Loader\ILoader;
-use ClassReflection;
 
-class Diphy
+class SimpleBuilder extends Container implements IBuilder
 {
 	private $config = array(
 		'services' => array(),
@@ -13,32 +13,9 @@ class Diphy
 		'autowiring' => TRUE,
 	);
 
-	/** var mixed[] */
-	private $services;
-
 	/** var Diphy\Loader\ILoader[] */
 	private $loaders = array();
 
-	public function __construct(array $config = array())
-	{
-		$this->config = $config + $this->config;
-	}
-
-	/**
-	 * register new class loader
-	 * @param Diphy\Loader\ILoader $loader
-	 * @return void
-	 */
-	public function registerClassLoader(ILoader $loader)
-	{
-		$this->loaders[] = $loader;
-	}
-
-	/**
-	 * Returns service
-	 * @param string $serviceName
-	 * @return mixed
-	 */
 	public function getService($serviceName)
 	{
 		if (isset($this->config['services'][$serviceName])) {
@@ -52,18 +29,24 @@ class Diphy
 		}
 	}
 
-	/**
-	 * Constructs service object
-	 * @param string $serviceName
-	 * @return mixed
-	 */
-	private function buildService($serviceName)
+	public function registerClassLoader(ILoader $loader)
 	{
+		$this->loaders[] = $loader;
+	}
+
+	public function buildService($serviceName)
+	{
+		$loaded = FALSE;
 		foreach ($this->loaders as $loader) {
-			if ($loader->classExists($serviceName)) {
+			if ($loader->classFileExists($serviceName)) {
 				$loader->loadClass($serviceName);
+				$loaded = TRUE;
 				break;
 			}
+		}
+
+		if (!$loaded) {
+			throw new \InvalidArgumentException(sprintf('No class loader is able to load class "%s"', $serviceName));
 		}
 
 		$classRefl = new \ReflectionClass($serviceName);
