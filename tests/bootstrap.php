@@ -14,6 +14,7 @@ require_once(LIBS_DIR . '/Loader/SimpleLoader.php');
 
 $loaderConfig = array(
 	'namespaces' => array(
+		'DiphyTest' => APP_DIR,
 		'Diphy' => LIBS_DIR,
 	),
 );

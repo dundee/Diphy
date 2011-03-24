@@ -1,5 +1,5 @@
 <?php
-namespace Diphy;
+namespace DiphyTest;
 
 use PHPUnit_Framework_TestCase;
 
