@@ -19,6 +19,8 @@ $loaderConfig = array(
 	'namespaces' => array(
 		'DiphyTest' => APP_DIR,
 		'Diphy' => LIBS_DIR,
+		'Foo'   => FOO_DIR,
+		'Boo'   => BOO_DIR,
 	),
 );
 
