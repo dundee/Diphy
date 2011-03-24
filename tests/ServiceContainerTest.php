@@ -3,7 +3,7 @@
 namespace DiphyTest\Builder;
 
 use DiphyTest\TestCase;
-use Diphy\Container;
+use Diphy\ServiceContainer;
 
 /**
  * @author Daniel Milde <daniel@milde.cz>
@@ -27,7 +27,7 @@ class ContainerTest extends TestCase
 
 	public function setUp()
 	{
-		$this->object = new Container();
+		$this->object = new ServiceContainer();
 	}
 
 	public function testGetService()

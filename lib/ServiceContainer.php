@@ -2,22 +2,14 @@
 
 namespace Diphy;
 
-use Diphy\Builder\IBuilder;
-use ClassReflection;
-
 /**
  * Basic Dependency Injection container
  */
-class Container
+class ServiceContainer implements IServiceContainer
 {
 	/** var mixed[] */
 	private $services;
 
-	/**
-	 * Returns service
-	 * @param string $serviceName
-	 * @return mixed
-	 */
 	public function getService($serviceName)
 	{
 		if (isset($this->services[$serviceName])) {
@@ -27,12 +19,6 @@ class Container
 		}
 	}
 
-	/**
-	 * Sets service
-	 * @param string $serviceName
-	 * @param mixed $service
-	 * @return Diphy\Container
-	 */
 	public function setService($serviceName, $service)
 	{
 		$this->services[$serviceName] = $service;
