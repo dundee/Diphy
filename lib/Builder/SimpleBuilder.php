@@ -7,12 +7,12 @@ use Diphy\Loader\ILoader;
 
 class SimpleBuilder extends ServiceContainer
 {
-	private $config = array(
+	protected $config = array(
 		'services' => array(),
 	);
 
 	/** var Diphy\Loader\ILoader[] */
-	private $loaders = array();
+	protected $loaders = array();
 
 	public function __construct(array $config = array())
 	{
@@ -75,7 +75,7 @@ class SimpleBuilder extends ServiceContainer
 
 			$this->services[$serviceName] = $classRefl->newInstanceArgs($params);
 		} else {
-			$this->services[$serviceName] = new $serviceName();
+			$this->services[$serviceName] = $classRefl->newInstance();
 		}
 
 		return $this->services[$serviceName];
