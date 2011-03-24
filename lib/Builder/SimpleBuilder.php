@@ -45,6 +45,11 @@ class SimpleBuilder extends ServiceContainer
 		$this->loaders[] = $loader;
 	}
 
+	/**
+	 * Build instance of service
+	 * @param string $serviceName
+	 * @return mixed
+	 */
 	protected function buildService($serviceName)
 	{
 		$this->loadClass($serviceName);
@@ -75,6 +80,10 @@ class SimpleBuilder extends ServiceContainer
 		return $this->services[$serviceName];
 	}
 
+	/**
+	 * Load class
+	 * @param string $className
+	 */
 	protected function loadClass($className)
 	{
 		$loaded = FALSE;
@@ -89,5 +98,38 @@ class SimpleBuilder extends ServiceContainer
 		if (!$loaded) {
 			throw new \InvalidArgumentException(sprintf('No class loader is able to load class "%s"', $className));
 		}
+	}
+
+	/**
+	 * Get service configured via given config
+	 * @param string $serviceName
+	 * @return mixed
+	 */
+	protected function getConfiguredService($serviceName)
+	{
+		$config = $this->config['services'][$serviceName];
+
+		if (isset($this->services[$serviceName])
+		    && (!isset($config['alwaysnew']) || !$config['alwaysnew'])) {
+			return $this->services[$serviceName];
+		}
+
+		if (isset($config['params'])) {
+			$params = array();
+			foreach ($config['params'] as $param) {
+				if (is_string($param) && strpos($param, '@') === 0) {
+					$params[] = $this->getService(str_replace('@', '', $param));
+				} else {
+					$params[] = $param;
+				}
+			}
+
+			$classRefl = new \ReflectionClass($config['class']);
+			$instance = $classRefl->newInstanceArgs($params);
+		} else {
+			$instance = new $config['class'];
+		}
+
+		return $this->services[$serviceName] = $instance;
 	}
 }
