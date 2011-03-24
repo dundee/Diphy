@@ -14,6 +14,16 @@ class SimpleBuilder extends Container implements IBuilder
 	/** var Diphy\Loader\ILoader[] */
 	private $loaders = array();
 
+	public function __construct(array $config = array())
+	{
+		$this->config = $config + $this->config;
+	}
+
+	public function setConfig(array $config)
+	{
+		$this->config = $config + $this->config;
+	}
+
 	public function getService($serviceName)
 	{
 		if (isset($this->config['services'][$serviceName])) {

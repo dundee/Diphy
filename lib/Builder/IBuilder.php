@@ -6,8 +6,15 @@ use Diphy\Loader\ILoader;
 
 interface IBuilder
 {
+	public function __construct(array $config = array());
+
 	/**
-	 * register new class loader
+	 * Sets new configuration
+	 */
+	public function setConfig(array $config);
+
+	/**
+	 * Registers new class loader
 	 * @param Diphy\Loader\ILoader $loader
 	 * @return void
 	 */

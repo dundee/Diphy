@@ -10,16 +10,8 @@ use ClassReflection;
  */
 class Container
 {
-	private $config = array(
-	);
-
 	/** var mixed[] */
 	private $services;
-
-	public function __construct(array $config = array())
-	{
-		$this->config = $config + $this->config;
-	}
 
 	/**
 	 * Returns service
