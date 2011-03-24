@@ -16,7 +16,7 @@ interface ILoader
 	 * @param string $className
 	 * @return bool
 	 */
-	public function classExists($className);
+	public function classFileExists($className);
 
 	/**
 	 * @param string $className

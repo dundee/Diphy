@@ -1,8 +1,9 @@
 <?php
 
-namespace Diphy\Loader;
+namespace DiphyTest\Loader;
 
-use Diphy\TestCase;
+use DiphyTest\TestCase;
+use Diphy\Loader\SimpleLoader;
 
 define('BOO_DIR', __DIR__ . '/resources');
 
@@ -60,11 +61,11 @@ class SimpleLoaderTest extends TestCase
 
 	public function testClassExists()
 	{
-		$this->assertTrue($this->object->classExists('Boo\Boo'));
+		$this->assertTrue($this->object->classFileExists('Boo\Boo'));
 	}
 
 	public function testClassNotExists()
 	{
-		$this->assertFalse($this->object->classExists('Foooo'));
+		$this->assertFalse($this->object->classFileExists('Foooo'));
 	}
 }

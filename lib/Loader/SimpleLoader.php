@@ -21,7 +21,7 @@ class SimpleLoader implements \Diphy\Loader\ILoader
 		spl_autoload_register(array($this, 'loadClass'));
 	}
 
-	public function classExists($className)
+	public function classFileExists($className)
 	{
 		if (!file_exists($this->getPathToClass($className))) {
 			return FALSE;
