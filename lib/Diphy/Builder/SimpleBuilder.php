@@ -4,6 +4,7 @@ namespace Diphy\Builder;
 
 use Diphy\ServiceContainer;
 use Diphy\Loader\ILoader;
+use Nette\Loaders\RobotLoader;
 
 /**
  * Builds services according to configuration or via reflection
@@ -40,10 +41,10 @@ class SimpleBuilder extends ServiceContainer
 
 	/**
 	 * Registers new class loader
-	 * @param Diphy\Loader\ILoader $loader
+	 * @param Nette\Loaders\RobotLoader $loader
 	 * @return void
 	 */
-	public function registerClassLoader(ILoader $loader)
+	public function registerClassLoader(RobotLoader $loader)
 	{
 		$this->loaders[] = $loader;
 	}
@@ -55,8 +56,6 @@ class SimpleBuilder extends ServiceContainer
 	 */
 	protected function buildService($serviceName)
 	{
-		$this->loadClass($serviceName);
-
 		$classRefl = new \ReflectionClass($serviceName);
 
 		if ($classRefl->isInterface()) {
@@ -82,26 +81,6 @@ class SimpleBuilder extends ServiceContainer
 		}
 
 		return $this->services[$serviceName];
-	}
-
-	/**
-	 * Load class
-	 * @param string $className
-	 */
-	protected function loadClass($className)
-	{
-		$loaded = FALSE;
-		foreach ($this->loaders as $loader) {
-			if ($loader->classFileExists($className)) {
-				$loader->loadClass($className);
-				$loaded = TRUE;
-				break;
-			}
-		}
-
-		if (!$loaded) {
-			throw new \InvalidArgumentException(sprintf('No class loader is able to load class "%s"', $className));
-		}
 	}
 
 	/**

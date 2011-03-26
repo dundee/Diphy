@@ -5,7 +5,6 @@ namespace DiphyTest\Builder;
 use DiphyTest\TestCase;
 use Nette\Caching\FileStorage;
 use Nette\Loaders\RobotLoader;
-use Diphy\Loader\NetteRobotLoader;
 use Diphy\Builder\SimpleBuilder;
 
 /**
@@ -33,10 +32,9 @@ class SimpleBuilderTest extends TestCase
 		$robot->addDirectory(APP_DIR);
 		$robot->addDirectory(LIBS_DIR);
 		$robot->register();
-		$loader = new NetteRobotLoader($robot);
 
 		$this->object = new SimpleBuilder($this->config);
-		$this->object->registerClassLoader($loader);
+		$this->object->registerClassLoader($robot);
 	}
 
 	public function testLoadConfig()
