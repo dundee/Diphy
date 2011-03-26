@@ -2,10 +2,9 @@
 
 use Nette\Loaders\RobotLoader;
 use Nette\Caching\FileStorage;
+use Nette\Caching\Cache;
+
 use Diphy\Builder\ComplexBuilder;
-use Diphy\Parser\ScriptParser;
-use Diphy\Cache\NetteCache;
-use Diphy\Loader\NetteRobotLoader;
 
 define('APP_DIR', __DIR__);
 define('LIBS_DIR', __DIR__ . '/../lib');
@@ -18,10 +17,11 @@ $loader = new RobotLoader();
 $loader->setCacheStorage(new FileStorage(TMP_DIR));
 $loader->addDirectory(APP_DIR);
 $loader->addDirectory(LIBS_DIR);
+$loader->ignoreDirs .= ', nette\tests';
 $loader->register();
 
 // create DI container
-$di = new ComplexBuilder(new ScriptParser(), new NetteCache(new FileStorage(TMP_DIR)));
-$di->registerClassLoader(new NetteRobotLoader($loader));
+$di = new ComplexBuilder(new Cache(new FileStorage(TMP_DIR)));
+$di->registerClassLoader($loader);
 
 $di->getService('DiphyExample\Application')->run();
