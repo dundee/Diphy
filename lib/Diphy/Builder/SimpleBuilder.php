@@ -21,6 +21,7 @@ class SimpleBuilder extends ServiceContainer
 	public function __construct(array $config = array())
 	{
 		$this->config = $config + $this->config;
+		$this->services[get_class($this)] = $this;
 	}
 
 	public function setConfig(array $config)
