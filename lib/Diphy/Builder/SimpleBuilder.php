@@ -29,9 +29,11 @@ class SimpleBuilder extends ServiceContainer
 		$this->config = $config + $this->config;
 	}
 
-	public function getService($serviceName)
+	public function getService($serviceName, array $options = NULL)
 	{
-		if (isset($this->config['services'][$serviceName])) {
+		if (isset($options)) {
+			return $this->buildService($serviceName, $options);
+		} elseif (isset($this->config['services'][$serviceName])) {
 			return $this->getConfiguredService($serviceName);
 		} elseif (isset($this->services[$serviceName])) {
 			return $this->services[$serviceName];
@@ -55,7 +57,7 @@ class SimpleBuilder extends ServiceContainer
 	 * @param string $serviceName
 	 * @return mixed
 	 */
-	protected function buildService($serviceName)
+	protected function buildService($serviceName, array $options = NULL)
 	{
 		$classRefl = new \ReflectionClass($serviceName);
 
@@ -64,21 +66,25 @@ class SimpleBuilder extends ServiceContainer
 			$classRefl = new \ReflectionClass($implementorName);
 		}
 
-		$constructorRefl = $classRefl->getConstructor();
-
-		if ($constructorRefl) {
-			$paramsRefl = $constructorRefl->getParameters();
-
-			$params = array();
-			foreach ($paramsRefl as $paramRefl) {
-				if (!$paramRefl->isOptional()) {
-					$params[] = $this->getService($paramRefl->getClass()->getName());
-				}
-			}
-
-			$this->services[$serviceName] = $classRefl->newInstanceArgs($params);
+		if (isset($options)) {
+			return $classRefl->newInstanceArgs($options);
 		} else {
-			$this->services[$serviceName] = $classRefl->newInstance();
+			$constructorRefl = $classRefl->getConstructor();
+
+			if ($constructorRefl) {
+				$paramsRefl = $constructorRefl->getParameters();
+
+				$params = array();
+				foreach ($paramsRefl as $paramRefl) {
+					if (!$paramRefl->isOptional()) {
+						$params[] = $this->getService($paramRefl->getClass()->getName());
+					}
+				}
+
+				$this->services[$serviceName] = $classRefl->newInstanceArgs($params);
+			} else {
+				$this->services[$serviceName] = $classRefl->newInstance();
+			}
 		}
 
 		return $this->services[$serviceName];
