@@ -104,6 +104,11 @@ class SimpleBuilder extends ServiceContainer
 			return $this->services[$serviceName];
 		}
 
+		if (isset($config['factory'])) {
+			$factory = $this->getService($config['factory'][0]);
+			return $this->services[$serviceName] = $factory->{$config['factory'][1]}();
+		}
+
 		if (isset($config['params'])) {
 			$params = array();
 			foreach ($config['params'] as $param) {
