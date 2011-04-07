@@ -121,6 +121,8 @@ class SimpleBuilder extends ServiceContainer
 
 			$classRefl = new \ReflectionClass($config['class']);
 			$instance = $classRefl->newInstanceArgs($params);
+		} elseif(isset($config['alwaysnew']) && $config['alwaysnew']) {
+			$instance = $this->buildService($config['class']);
 		} else {
 			$instance = $this->getService($config['class']);
 		}
