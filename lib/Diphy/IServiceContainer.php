@@ -2,15 +2,8 @@
 
 namespace Diphy;
 
-interface IServiceContainer
+interface IServiceContainer extends \Nette\IContext
 {
-	/**
-	 * Returns service
-	 * @param string $serviceName
-	 * @return mixed
-	 */
-	public function getService($serviceName);
-
 	/**
 	 * Sets service
 	 * @param string $serviceName
